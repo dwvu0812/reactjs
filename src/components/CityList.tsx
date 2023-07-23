@@ -1,3 +1,4 @@
+import { useCities } from "../contexts/CitiesContext";
 import CityItem from "./CityItem";
 import styles from "./CityList.module.css";
 import Message from "./Message";
@@ -23,7 +24,8 @@ export interface Position {
   lng: number;
 }
 
-const CityList: React.FC<Props> = ({ cities, isLoading }) => {
+const CityList: React.FC = () => {
+  const { cities, isLoading } = useCities();
   if (isLoading) return <Spinner />;
   if (!cities.length)
     return <Message message="Add your first city by clicking on your map" />;

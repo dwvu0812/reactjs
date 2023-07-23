@@ -1,3 +1,4 @@
+import { useCities } from "../contexts/CitiesContext";
 import CityItem from "./CityItem";
 import CountryItem from "./CountryItem";
 import styles from "./CountryList.module.css";
@@ -5,8 +6,8 @@ import Message from "./Message";
 import Spinner from "./Spinner";
 
 type Props = {
-  cities: City[];
-  isLoading: boolean;
+  cities?: City[];
+  isLoading?: boolean;
 };
 
 export interface City {
@@ -29,7 +30,9 @@ export interface Country {
   emoji: string;
 }
 
-const CountryList: React.FC<Props> = ({ cities, isLoading }) => {
+const CountryList: React.FC<Props> = () => {
+  const { cities, isLoading } = useCities();
+
   if (isLoading) return <Spinner />;
   if (!cities.length)
     return <Message message="Add your first country by clicking on your map" />;
