@@ -1,36 +1,42 @@
-import styled from "styled-components";
+import { useSearchParams } from "react-router-dom";
+import Menus from "../../ui/Menus";
 import Spinner from "../../ui/Spinner";
+import Table from "../../ui/Table";
 import { CabinRow } from "./CabinRow";
 import { useCabin } from "./useCabin";
-import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
-
-// const Table = styled.div`
-//   border: 1px solid var(--color-grey-200);
-
-//   font-size: 1.4rem;
-//   background-color: var(--color-grey-0);
-//   border-radius: 7px;
-//   overflow: hidden;
-// `;
-
-const TableHeader = styled.header`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-
-  background-color: var(--color-grey-50);
-  border-bottom: 1px solid var(--color-grey-100);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  font-weight: 600;
-  color: var(--color-grey-600);
-  padding: 1.6rem 2.4rem;
-`;
 
 export const CabinTable = () => {
+  const [searchParams] = useSearchParams();
   const { isLoading, cabins } = useCabin();
+
+  const filteredValue = searchParams.get("discount") || "all";
+
+  console.log(filteredValue);
+
+  let filteredCabins;
+
+  // switch (filteredValue) {
+  //   case "all":
+  //     filteredCabins = cabins;
+  //     break;
+  //   case "no-discount":
+  //     filteredCabins = cabins?.filter((cabin) => cabin.discount === 0);
+  //     break;
+  //   case "with-discount":
+  //     filteredCabins = cabins?.filter((cabin) => cabin.discount > 0);
+  //     break;
+  //   default:
+  //     filteredCabins = cabins;
+  //     break;
+  // }
+
+  if (filteredValue === "all") filteredCabins = cabins;
+  if (filteredValue === "no-discount")
+    filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
+  if (filteredValue === "with-discount")
+    filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
+
+  console.log(filteredCabins);
 
   if (isLoading) return <Spinner />;
   return (
@@ -45,7 +51,7 @@ export const CabinTable = () => {
           <div></div>
         </Table.Header>
         <Table.Body
-          data={cabins}
+          data={filteredCabins}
           render={(cabin) => <CabinRow key={cabin.id} cabin={cabin} />}
         />
       </Table>
