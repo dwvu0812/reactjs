@@ -8,6 +8,7 @@ import Order, { loader as orderLoader } from "./features/order/Order";
 import AppLayout from "./ui/AppLayout";
 import Menu, { loader as menuLoader } from "./features/menu/Menu";
 import NotFound from "./ui/Error";
+import { action as updateOrderAction } from "./features/order/UpdateOrder";
 
 function App() {
   const router = createBrowserRouter([
@@ -33,6 +34,7 @@ function App() {
           element: <Order />,
           loader: orderLoader,
           errorElement: <NotFound />,
+          action: updateOrderAction,
         },
       ],
     },
